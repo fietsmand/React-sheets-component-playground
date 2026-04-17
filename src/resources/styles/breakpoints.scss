@@ -1,0 +1,17 @@
+$breakpoints: (
+	'xs': 360px,
+	'sm': 768px,
+	'md': 1024px,
+	'lg': 1320px,
+	'xl': 1600px,
+) !default;
+
+$heightBreakpoints: (
+	'h600': 600px,
+) !default;
+
+// See implementation of these in 02-tools/media.scss
+
+// Global component breakpoints
+$layoutSwitchThumbs: 'md';
+$layoutSwitchPDP: 'sm';

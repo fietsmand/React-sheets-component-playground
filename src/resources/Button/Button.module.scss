@@ -1,0 +1,203 @@
+@use '../styles/media.scss';
+
+// New Button mixin based on MORE Design System (Buttons page)
+@mixin button() {
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	gap: var(--spacing-6);
+	min-height: var(--size-40);
+	padding: 0 var(--spacing-12);
+
+	position: relative;
+
+	background-color: var(--Background-Greys-Black);
+	color: var(--Text-Contrast-text);
+
+	border: var(--border-size-1) solid transparent;
+	border-radius: 2.5rem;
+
+	font-size: var(--font-size-body-14);
+	font-weight: var(--font-weight-semibold);
+	line-height: 1.4;
+
+	transition:
+		background-color var(--ease-base) var(--trans-time-sm),
+		color var(--ease-base) var(--trans-time-sm),
+		border-color var(--ease-base) var(--trans-time-sm);
+
+		&:hover {
+			background: var(--Background-Greys-Medium-grey);
+		}
+	
+
+	&:focus {
+		border: var(--border-size-2) solid var(--Background-Greys-Ash-grey);
+	}
+
+	&:active {
+		background: var(--Background-Greys-Dark-grey);
+	}
+
+	&:disabled {
+		pointer-events: none;
+		cursor: default;
+		background: var(--Background-Greys-Ash-grey);
+		color: var(--Text-Contrast-text);
+	}
+}
+
+@mixin buttonVariant($variant) {
+	@if $variant == 'secondary' {
+		background-color: var(--Background-Greys-White);
+		color: var(--Text-Primary-text);
+		border-color: var(--Background-Greys-Light-grey);
+
+			&:hover {
+				background-color: var(--Background-Beige-Secondary-panel);
+			
+		}
+
+		&:focus {
+			border: var(--border-size-2) solid var(--Background-Greys-Ash-grey);
+		}
+
+		&:active {
+			background-color: var(--Background-Beige-Primary-panel);
+		}
+
+		&:disabled {
+			background-color: var(--Background-Greys-White);
+			border-color: var(--Background-Greys-Light-grey);
+			color: var(--Text-Disabled);
+		}
+	}
+
+	@if $variant == 'ternary' {
+		background-color: transparent;
+		color: var(--Text-Primary-text);
+
+			&:hover {
+				background-color: var(--Background-Beige-Secondary-panel);
+			
+		}
+
+		&:focus {
+			border: var(--border-size-2) solid var(--Background-Greys-Ash-grey);
+		}
+
+		&:active {
+			background-color: var(--Background-Beige-Primary-panel);
+		}
+
+		&:disabled {
+			background-color: transparent;
+			color: var(--Text-Disabled);
+		}
+	}
+
+	@if $variant == 'purchase' {
+		min-height: 3.5rem;
+		padding: 0 1.375rem;
+		gap: var(--spacing-16);
+
+		background-color: var(--Background-Golds-purchase);
+		color: var(--Text-Contrast-text);
+		box-shadow: var(--box-shadow-lg);
+
+			&:hover {
+			background-color: var(--Background-Golds-hover);
+			
+		}
+
+		&:active {
+			background-color: var(--Background-Golds-active);
+		}
+
+		&:disabled {
+			background-color: var(--Background-Golds-disabled);
+			color: var(--Text-Contrast-text);
+		}
+	}
+
+	@if $variant == 'linkButton' {
+		min-height: auto;
+		padding: 0.25rem 0.125rem 0.25rem 0.25rem;
+		gap: var(--spacing-4);
+
+		background-color: transparent;
+		border: 0;
+		border-radius: 2.5rem;
+		color: var(--Text-Primary-text);
+
+			&:hover {
+				background: var(--Background-Beige-Secondary-panel);
+			
+		}
+
+		&:focus {
+			border: var(--border-size-2) solid var(--Background-Greys-Ash-grey);
+		}
+
+		&:active {
+			background: var(--Background-Beige-Primary-panel);
+		}
+
+		&:disabled {
+			background-color: transparent;
+			color: var(--Text-Disabled);
+		}
+	}
+}
+
+
+.button {
+    display: inline-flex;
+    min-width: 70px;
+    padding: 10px var(--spacing-12, 12px);
+    justify-content: center;
+    align-items: center;
+    gap: var(--spacing-6, 6px);
+
+
+    border: none;
+    border-radius: 40px;
+    background-color: transparent;
+
+    transition: all 200ms ease-in-out;
+	@include button();
+}
+
+// Variants
+.variantPrimary {
+	@include buttonVariant('primary');
+}
+
+// Variants
+.variantSecondary {
+	@include buttonVariant('secondary');
+}
+
+.variantDark {
+	@include buttonVariant('dark');
+}
+
+.variantGhost {
+	@include buttonVariant('ghost');
+}
+
+.variantOutline {
+	@include buttonVariant('outline');
+}
+
+.variantDanger {
+	@include buttonVariant('danger');
+}
+
+.variantLinkButton {
+	@include buttonVariant('linkButton');
+}
+
+.variantTernary {
+	@include buttonVariant('ternary');
+}

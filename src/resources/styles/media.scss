@@ -1,0 +1,217 @@
+@use 'sass:selector';
+@use 'sass:map';
+@use 'sass:string';
+@use 'breakpoints';
+
+// Media query mixins
+// Min-width is default. For max-width, pass 'max' as second param.
+
+/* Example use:
+
+1. With min-width
+  .foo {
+      padding: 1.25rem;
+
+      @include mq('sm') {
+          padding-top: 2.5rem;d
+      }
+  }
+
+2. With max-width
+  .foo {
+      padding: 1.25rem;
+
+      @include mq('md', 'max') {
+          padding-top: .625rem;
+      }
+  }
+*/
+@mixin mq($width, $type: 'min') {
+	@if map.has-key(breakpoints.$breakpoints, $width) {
+		$width: map.get(breakpoints.$breakpoints, $width);
+		@if $type == 'max' {
+			$width: $width - 1px;
+		}
+
+		@media only screen and (#{$type}-width: $width) {
+			@if & == null {
+				html[data-disable-zoom='false'] {
+					@content;
+				}
+			} @else {
+				@at-root #{selector.nest("html[data-disable-zoom='false']", &)} {
+					@content;
+				}
+			}
+		}
+
+		@media only screen and
+		(-webkit-max-device-pixel-ratio: 1.09) and (#{$type}-width: $width),
+		(-webkit-min-device-pixel-ratio: 1.10) and (-webkit-max-device-pixel-ratio: 1.24) and (#{$type}-width: calc($width / 1.1)),
+		(-webkit-min-device-pixel-ratio: 1.25) and (-webkit-max-device-pixel-ratio: 1.49) and (#{$type}-width: calc($width / 1.25)),
+		(-webkit-min-device-pixel-ratio: 1.5)  and (-webkit-max-device-pixel-ratio: 1.74) and (#{$type}-width: calc($width / 1.5)),
+		(-webkit-min-device-pixel-ratio: 1.75) and (-webkit-max-device-pixel-ratio: 1.99) and (#{$type}-width: calc($width / 1.75)),
+		(-webkit-min-device-pixel-ratio: 2)    and (#{$type}-width: $width) {
+			@if & == null {
+				html[data-disable-zoom='true'] {
+					@content;
+				}
+			} @else {
+				@at-root #{selector.nest("html[data-disable-zoom='true']", &)} {
+					@content;
+				}
+			}
+		}
+	}
+}
+
+@mixin mqHeight($height, $type: 'min') {
+	@if map.has-key(breakpoints.$heightBreakpoints, $height) {
+		$height: map.get(breakpoints.$heightBreakpoints, $height);
+		@if $type == 'max' {
+			$height: $height - 1px;
+		}
+
+		@media only screen and (#{$type}-height: $height) {
+			@if & == null {
+				html[data-disable-zoom='false'] {
+					@content;
+				}
+			} @else {
+				@at-root #{selector.nest("html[data-disable-zoom='false']", &)} {
+					@content;
+				}
+			}
+		}
+
+		@media only screen and
+		(-webkit-max-device-pixel-ratio: 1.09) and (#{$type}-height: $height),
+		(-webkit-min-device-pixel-ratio: 1.10) and (-webkit-max-device-pixel-ratio: 1.24) and (#{$type}-height: calc($height / 1.1)),
+		(-webkit-min-device-pixel-ratio: 1.25) and (-webkit-max-device-pixel-ratio: 1.49) and (#{$type}-height: calc($height / 1.25)),
+		(-webkit-min-device-pixel-ratio: 1.5)  and (-webkit-max-device-pixel-ratio: 1.74) and (#{$type}-height: calc($height / 1.5)),
+		(-webkit-min-device-pixel-ratio: 1.75) and (-webkit-max-device-pixel-ratio: 1.99) and (#{$type}-height: calc($height / 1.75)) {
+			@if & == null {
+				html[data-disable-zoom='true'] {
+					@content;
+				}
+			} @else {
+				@at-root #{selector.nest("html[data-disable-zoom='true']", &)} {
+					@content;
+				}
+			}
+		}
+	}
+}
+
+@mixin cq($width) {
+	$name: string.unique-id();
+	:has(> &) {
+		container-type: inline-size;
+		container-name: $name;
+	}
+
+	@at-root #{selector.nest("html[data-disable-zoom='false']", &)} {
+		@container #{$name} (width < #{$width}) {
+			@content;
+		}
+	}
+
+	@at-root #{selector.nest("html[data-disable-zoom='true']", &)} {
+		@media (-webkit-max-device-pixel-ratio: 1.09) {
+			@container #{$name} (width < #{$width}) {
+				@content;
+			}
+		}
+		@media (-webkit-min-device-pixel-ratio: 1.1) and (-webkit-max-device-pixel-ratio: 1.24) {
+			@container #{$name} (width < calc(#{$width} / 1.1)) {
+				@content;
+			}
+		}
+		@media (-webkit-min-device-pixel-ratio: 1.25) and (-webkit-max-device-pixel-ratio: 1.49) {
+			@container #{$name} (width < calc(#{$width} / 1.25)) {
+				@content;
+			}
+		}
+		@media (-webkit-min-device-pixel-ratio: 1.5) and (-webkit-max-device-pixel-ratio: 1.74) {
+			@container #{$name} (width < calc(#{$width} / 1.5)) {
+				@content;
+			}
+		}
+		@media (-webkit-min-device-pixel-ratio: 1.75) and (-webkit-max-device-pixel-ratio: 1.99) {
+			@container #{$name} (width < calc(#{$width} / 1.75)) {
+				@content;
+			}
+		}
+		@media (-webkit-min-device-pixel-ratio: 2) {
+			@container #{$name} (width < #{$width}) {
+				@content;
+			}
+		}
+	}
+}
+
+// Touch screen
+// The primary input mechanism of the device includes a pointing device of limited accuracy.
+
+/* Example use:
+
+.foo {
+	@include mqTouch {
+		padding: 1.25rem;
+	}
+}
+*/
+@mixin mqTouch {
+	@media (pointer: coarse) {
+		@content;
+	}
+}
+
+// Hover device screen
+// The primary input mechanism system of the device can hover over elements with ease.
+
+/* Example use:
+
+.foo {
+	@include mqHover {
+		padding: 1.25rem;
+	}
+}
+*/
+@mixin mqHover {
+	@media (hover: hover) {
+		@content;
+	}
+}
+
+// Retina screen
+
+/* Example use:
+
+.foo {
+	@include mqRetina {
+		padding: 1.25rem;
+	}
+}
+*/
+@mixin mqRetina {
+	@media (-webkit-min-device-pixel-ratio: 2) {
+		@content;
+	}
+}
+
+// Print screen
+
+/* Example use:
+
+.foo {
+	@include mqPrint {
+		display: none;
+	}
+}
+*/
+@mixin mqPrint {
+	@media print {
+		@content;
+	}
+}
