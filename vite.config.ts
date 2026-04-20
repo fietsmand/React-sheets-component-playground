@@ -1,12 +1,19 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import svgr from "vite-plugin-svgr";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
-  server: {
-    allowedHosts: ["m66963-5173.csb.app"],
-  },
+  plugins: [
+    svgr({
+      esbuildOptions: {
+        loader: "jsx",
+        jsx: "automatic",
+      },
+    }),
+    react(),
+  ],
+
   css: {
     modules: {
       scopeBehaviour: "local",

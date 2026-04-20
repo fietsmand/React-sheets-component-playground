@@ -5,7 +5,7 @@ import { capitalize } from "lodash";
 
 interface ButtonProps {
   clickAction: () => void;
-  variant: "primary" | "tertiary";
+  variant?: "primary" | "tertiary" | "none";
 }
 
 export function Button({
@@ -17,11 +17,11 @@ export function Button({
     <button
       className={classNames(
         styles.button,
-        styles[`variant${capitalize(variant)}`]
+        styles[`variant${capitalize(variant)}`],
       )}
       onClick={() => startTransition(clickAction)}
     >
-      Open drawer
+      {children}
     </button>
   );
 }

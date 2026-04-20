@@ -1,0 +1,113 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-16);
+  padding-inline: var(--spacing-24);
+  text-align: start;
+}
+.profileDetails {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+}
+
+.actions {
+  display: flex;
+  padding: 8px 0;
+  justify-content: space-between;
+  align-items: flex-start;
+  align-self: stretch;
+}
+
+.action {
+  display: flex;
+  width: 60px;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.actionName {
+  color: var(--Text-Primary-text, #000);
+  text-align: center;
+
+  /* Body/14px regular 140 */
+  font-family: var(--font-family-default, Inter);
+  font-size: var(--font-size-body-14, 14px);
+  font-style: normal;
+  font-weight: var(--font-weight-regular, 400);
+  line-height: 140%; /* 19.6px */
+}
+
+.actionIcon {
+  display: flex;
+  width: 24px;
+  height: 24px;
+  padding: 8px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 40px;
+  border: 1px solid var(--Background-Greys-Light-grey, #e6e6e6);
+  background: var(--Background-Greys-White, #fff);
+}
+
+h1,
+h2,
+h3,
+p,
+ul {
+  margin: 0;
+}
+
+.name {
+  color: var(--Text-Primary-text, #000);
+
+  /* Body/14px semibold 140 */
+  font-family: var(--font-family-default, Inter);
+  font-size: var(--font-size-body-14, 14px);
+  font-style: normal;
+  font-weight: var(--font-weight-semibold, 600);
+  line-height: 140%; /* 19.6px */
+}
+.email {
+  color: var(--Text-Secondary-text, #666);
+
+  /* Body/14px regular 140 */
+  font-family: var(--font-family-default, Inter);
+  font-size: var(--font-size-body-14, 14px);
+  font-style: normal;
+  font-weight: var(--font-weight-regular, 400);
+  line-height: 140%; /* 19.6px */
+}
+
+ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.links {
+}
+
+.link {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  align-self: stretch;
+  border-bottom: 1px solid #e6e6e6;
+  width: 100%;
+  & > button {
+    width: 100%;
+    padding: 12px 0;
+    border-radius: 0;
+    justify-content: flex-start;
+    &:hover {
+      background-color: var(--Background-Beige-Secondary-panel);
+    }
+  }
+}
+
+.listItemIcon {
+  height: 24px;
+  width: 24px;
+}
