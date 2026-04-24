@@ -1,4 +1,4 @@
-import { use } from "react";
+import { memo, use } from "react";
 
 interface AccountsData {
   accounts: [
@@ -43,7 +43,7 @@ export function AccountsView() {
       <ul>
         {data.accounts.map((account) => {
           return (
-            <li>
+            <li key={account.id}>
               {account.id}: {account.label}
             </li>
           );
@@ -52,3 +52,5 @@ export function AccountsView() {
     </section>
   );
 }
+
+export const MemoAccountsView = memo(AccountsView);
