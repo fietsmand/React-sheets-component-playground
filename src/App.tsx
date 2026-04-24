@@ -7,7 +7,7 @@ import { ProfileView } from "./resources/ProfileView";
 //use ref
 export default function App() {
   const sheetRef = useRef<SheetRef>(null);
-  console.log(sheetRef.current);
+  //console.log(sheetRef.current);
   return (
     <div className="App">
       <h1>Sheet example</h1>
@@ -26,19 +26,42 @@ export default function App() {
 
       <Sheet
         ref={sheetRef}
-        header={<SheetHeader header={"title"} />}
+        header={
+          <SheetHeader
+            header={
+              <>
+                <Button
+                  clickAction={() => {
+                    sheetRef.current?.open();
+                  }}
+                >
+                  back
+                </Button>
+                <Button
+                  clickAction={() => {
+                    sheetRef.current?.open();
+                  }}
+                >
+                  close
+                </Button>
+              </>
+            }
+          />
+        }
         footer={
-          <SheetFooter>
-            <Button
-              clickAction={() => {
-                const isConfirm = confirm("DO YOU WANT TO SAVE");
-                console.log("🚀 ~ App ~ isConfirm:", isConfirm);
-                if (isConfirm) sheetRef.current?.close();
-              }}
-            >
-              action 1
-            </Button>
-          </SheetFooter>
+          <SheetFooter
+            footer={
+              <Button
+                clickAction={() => {
+                  const isConfirm = confirm("DO YOU WANT TO SAVE");
+                  console.log("🚀 ~ App ~ isConfirm:", isConfirm);
+                  if (isConfirm) sheetRef.current?.close();
+                }}
+              >
+                action 1
+              </Button>
+            }
+          />
         }
       >
         <ProfileView />

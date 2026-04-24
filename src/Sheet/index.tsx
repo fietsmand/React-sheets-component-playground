@@ -28,20 +28,7 @@ interface SheetHeaderProps {
 }
 
 export function SheetHeader({ header }: SheetHeaderProps) {
-  return (
-    <header>
-      <div>Back</div>
-      <Button
-        clickAction={() => {
-          sheetRef.current?.close();
-        }}
-        variant={"primary"}
-      >
-        Close
-      </Button>
-      {header}
-    </header>
-  );
+  return <header>{header}</header>;
 }
 
 interface SheetFooterProps extends PropsWithChildren {
@@ -63,7 +50,6 @@ export function Sheet({ children, ref, footer, header }: SheetProps) {
       },
       close() {
         setIsOpen(false);
-        console.log("AAA");
         dialogRef.current?.hidePopover();
       },
     };
