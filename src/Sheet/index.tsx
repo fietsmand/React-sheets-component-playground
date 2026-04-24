@@ -142,11 +142,9 @@ export function Sheet({ children, ref, header, footer }: SheetProps) {
   }, [isOpen]);
 
   function closeCurrentSheet() {
-    startTransition(() => {
-      modalRef.current?.hidePopover();
-      setOpen(false);
-      sheetContext?.moveContentIn?.();
-    });
+    modalRef.current?.hidePopover();
+    setOpen(false);
+    sheetContext?.moveContentIn?.();
   }
 
   return (

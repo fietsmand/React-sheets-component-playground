@@ -1,4 +1,7 @@
-import { use } from "react";
+import { use, useRef } from "react";
+import { SheetRef, Sheet, SheetHeader } from "../../Sheet";
+import { Button } from "../Button";
+import { Icon } from "../Icon";
 
 interface AccountsData {
   accounts: [
@@ -32,6 +35,21 @@ function getAccounts() {
   return accountsPromise;
 }
 
+function AccountButton2({}) {
+  const accountsRef = useRef<SheetRef>(null);
+  const onClickAccounts = () => accountsRef.current?.open();
+  return (
+    <>
+      <Button variant="none" clickAction={onClickAccounts}>
+        <Icon icon="account" />
+        Accounts bla
+      </Button>
+      <Sheet ref={accountsRef} header={<SheetHeader>2</SheetHeader>}>
+        <AccountsView />
+      </Sheet>
+    </>
+  );
+}
 // NOTE: This should only be rendered when the sheet has been opened
 export function AccountsView() {
   const data = use(getAccounts());
@@ -48,6 +66,8 @@ export function AccountsView() {
             </li>
           );
         })}
+
+        <AccountButton2 />
       </ul>
     </section>
   );

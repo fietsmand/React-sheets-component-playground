@@ -30,11 +30,26 @@ function getProfile() {
   return profilePromise;
 }
 
+function AccountButton({ accountsNum }) {
+  const accountsRef = useRef<SheetRef>(null);
+  const onClickAccounts = () => accountsRef.current?.open();
+  return (
+    <>
+      <Button variant="none" clickAction={onClickAccounts}>
+        <Icon icon="account" className={styles.listItemIcon} />
+        Accounts ({accountsNum})
+      </Button>
+      <Sheet ref={accountsRef} header={<SheetHeader>J</SheetHeader>}>
+        <AccountsView />
+      </Sheet>
+    </>
+  );
+}
+
 // NOTE: This should only be rendered when the sheet has been opened
 export function ProfileView() {
   const data = use(getProfile());
-  const accountsRef = useRef<SheetRef>(null);
-  const onClickAccounts = () => accountsRef.current?.open();
+
   return (
     <div className={styles.section}>
       <div className={styles.profileDetails}>
@@ -61,13 +76,7 @@ export function ProfileView() {
       </ul>
       <ul className={styles.links}>
         <li className={styles.link}>
-          <Button variant="none" clickAction={onClickAccounts}>
-            <Icon icon="account" className={styles.listItemIcon} />
-            Accounts ({data.numberOfSelectedAccounts})
-          </Button>
-          <Sheet ref={accountsRef} header={<SheetHeader>J</SheetHeader>}>
-            <AccountsView />
-          </Sheet>
+          <AccountButton accountsNum={data.numberOfSelectedAccounts} />
         </li>
         <li className={styles.link}>
           <Button variant="none" clickAction={() => {}}>

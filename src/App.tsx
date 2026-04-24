@@ -7,8 +7,6 @@ import React from "react";
 
 export default function App() {
   const ref = useRef<SheetRef>(null);
-  const buttonRef = useRef<HTMLButtonElement>(null);
-  buttonRef.current?.click();
   return (
     <div className="App">
       <h1>Sheet example</h1>
@@ -29,9 +27,9 @@ export default function App() {
         header={<SheetHeader>ELLO</SheetHeader>}
         footer={undefined}
       >
-        {/* <Suspense fallback={<p>Loading content</p>}> */}
-        <ProfileView />
-        {/* </Suspense> */}
+        <Suspense fallback={<p>Loading content 2</p>}>
+          <ProfileView />
+        </Suspense>
       </Sheet>
     </div>
   );
