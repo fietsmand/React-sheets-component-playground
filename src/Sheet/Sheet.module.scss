@@ -1,0 +1,98 @@
+:root {
+  --animation-duration: 0.3s;
+}
+
+.dialog {
+  height: auto;
+  width: 420px;
+  position: fixed;
+  right: 8px;
+  top: 8px;
+  bottom: 8px;
+  left: auto;
+  margin: 0;
+  padding: 0;
+  outline: none;
+  border: 0;
+  border-radius: 16px;
+  animation: slide-out var(--animation-duration) linear;
+  overflow: hidden;
+  flex-direction: column;
+}
+
+.dialog:popover-open {
+  display: flex;
+  animation: slide-in var(--animation-duration) linear;
+}
+
+.dialog:popover-open:-internal-popover-in-top-layer::backdrop {
+  animation: backdrop-fade-in var(--animation-duration) ease-out forwards;
+}
+// If dialog is rendered in another dialog
+.dialog:popover-open
+  .dialog:popover-open:-internal-popover-in-top-layer::backdrop {
+  animation: none;
+}
+
+.header {
+  display: flex;
+  padding: 24px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  align-self: stretch;
+}
+
+/* Animation keyframes */
+
+@keyframes slide-in {
+  0% {
+    transform: translateX(420px);
+    display: none;
+  }
+
+  100% {
+    transform: translateX(0px);
+    display: block;
+  }
+}
+
+@keyframes slide-out {
+  0% {
+    top: -8px;
+    right: -8px;
+    bottom: -8px;
+    transform: translateX(0px);
+    display: block;
+  }
+
+  100% {
+    transform: translateX(420px);
+    display: none;
+  }
+}
+
+@keyframes backdrop-fade-in {
+  0% {
+    background: rgba(0, 0, 0, 0);
+    backdrop-filter: blur(0px);
+  }
+
+  100% {
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(1px);
+  }
+}
+
+@keyframes backdrop-fade-out {
+  0% {
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(1px);
+  }
+
+  100% {
+    background: rgba(0, 0, 0, 0);
+    backdrop-filter: blur(0px);
+  }
+}

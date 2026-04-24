@@ -1,5 +1,5 @@
 import classNames from "classnames";
-
+import styles from "./Icon.module.scss";
 import { icons } from "./icons";
 
 export function Icon({
@@ -12,7 +12,7 @@ export function Icon({
   const IconType = icons[icon];
   if (!IconType) return;
   return (
-    <i className={className}>
+    <i className={classNames(className, styles.icon)}>
       <IconType />
     </i>
   );

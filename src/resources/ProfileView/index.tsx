@@ -1,8 +1,8 @@
-import { use } from "react";
+import { use, useRef } from "react";
 import { Button } from "../Button";
 import styles from "./ProfileView.module.scss";
 import { Icon } from "../Icon";
-import { Sheet } from "../../Sheet";
+import { Sheet, SheetHeader, SheetRef } from "../../Sheet";
 import { AccountsView } from "../AccountsView";
 interface ProfileData {
   name: string;
@@ -33,11 +33,12 @@ function getProfile() {
 // NOTE: This should only be rendered when the sheet has been opened
 export function ProfileView() {
   const data = use(getProfile());
-
+  const accountsRef = useRef<SheetRef>(null);
+  const onClickAccounts = () => accountsRef.current?.open();
   return (
     <div className={styles.section}>
       <div className={styles.profileDetails}>
-        <h3 className={styles.name}>{data.name}</h3>
+        <h4 className={styles.name}>{data.name}</h4>
         <p className={styles.email}>{data.email}</p>
       </div>
       <ul className={styles.actions}>
@@ -60,11 +61,11 @@ export function ProfileView() {
       </ul>
       <ul className={styles.links}>
         <li className={styles.link}>
-          <Button variant="none" clickAction={() => {}}>
+          <Button variant="none" clickAction={onClickAccounts}>
             <Icon icon="account" className={styles.listItemIcon} />
             Accounts ({data.numberOfSelectedAccounts})
           </Button>
-          <Sheet>
+          <Sheet ref={accountsRef} header={<SheetHeader>J</SheetHeader>}>
             <AccountsView />
           </Sheet>
         </li>
