@@ -23,7 +23,7 @@ function getAccountsImpl() {
           },
         ],
       });
-    }, 2000);
+    }, 1000);
   });
 }
 
@@ -43,7 +43,7 @@ export function AccountsView() {
       <ul>
         {data.accounts.map((account) => {
           return (
-            <li>
+            <li key={account.id}>
               {account.id}: {account.label}
             </li>
           );

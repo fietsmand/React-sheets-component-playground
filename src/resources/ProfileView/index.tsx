@@ -21,7 +21,7 @@ function getProfileImpl() {
         email: "daniel.huizenga@bestseller.com",
         numberOfSelectedAccounts: 2,
       });
-    }, 2000);
+    }, 1000);
   });
 }
 
@@ -60,12 +60,23 @@ export function ProfileView() {
       </ul>
       <ul className={styles.links}>
         <li className={styles.link}>
-          <Button variant="none" clickAction={() => {}}>
-            <Icon icon="account" className={styles.listItemIcon} />
-            Accounts ({data.numberOfSelectedAccounts})
-          </Button>
           <Sheet>
-            <AccountsView />
+            <Sheet.Trigger>
+              {({ open, prefetch }) => (
+                <span onPointerEnter={prefetch} onFocus={prefetch}>
+                  <Button variant="none" clickAction={open}>
+                    <Icon icon="account" className={styles.listItemIcon} />
+                    Accounts ({data.numberOfSelectedAccounts})
+                  </Button>
+                </span>
+              )}
+            </Sheet.Trigger>
+            <Sheet.Panel>
+              <Sheet.Header title="Accounts" />
+              <Sheet.Body>
+                <AccountsView />
+              </Sheet.Body>
+            </Sheet.Panel>
           </Sheet>
         </li>
         <li className={styles.link}>
