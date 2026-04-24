@@ -1,4 +1,4 @@
-import { PropsWithChildren, startTransition } from "react";
+import { PropsWithChildren, startTransition, useTransition } from "react";
 import styles from "./Button.module.scss";
 import classNames from "classnames";
 import { capitalize } from "lodash";
@@ -13,12 +13,14 @@ export function Button({
   variant = "primary",
   children,
 }: PropsWithChildren<ButtonProps>) {
+  const [isPending, startTransition] = useTransition();
   return (
     <button
       className={classNames(
         styles.button,
         styles[`variant${capitalize(variant)}`],
       )}
+      disabled={isPending}
       onClick={() => startTransition(clickAction)}
     >
       {children}

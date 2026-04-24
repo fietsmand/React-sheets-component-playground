@@ -1,21 +1,30 @@
 import { useRef } from "react";
 import { Button } from "./resources/Button";
 import "./styles.css";
-import { Sheet } from "./Sheet";
+import { Sheet, SheetRef } from "./Sheet";
 import { ProfileView } from "./resources/ProfileView";
 
+//use ref
 export default function App() {
+  const sheetRef = useRef<SheetRef>(null);
+  console.log(sheetRef.current);
   return (
     <div className="App">
       <h1>Sheet example</h1>
       <pre>
         <p>Start by editing the `./Sheet/index.tsx` component.</p>
       </pre>
-      <Button clickAction={() => {}} variant={"primary"}>
+
+      <Button
+        clickAction={() => {
+          sheetRef.current?.open();
+        }}
+        variant={"primary"}
+      >
         Open Drawer
       </Button>
 
-      <Sheet>
+      <Sheet ref={sheetRef}>
         <ProfileView />
       </Sheet>
     </div>

@@ -1,8 +1,8 @@
-import { use } from "react";
+import { use, useRef } from "react";
 import { Button } from "../Button";
 import styles from "./ProfileView.module.scss";
 import { Icon } from "../Icon";
-import { Sheet } from "../../Sheet";
+import { Sheet, SheetRef } from "../../Sheet";
 import { AccountsView } from "../AccountsView";
 interface ProfileData {
   name: string;
@@ -33,6 +33,7 @@ function getProfile() {
 // NOTE: This should only be rendered when the sheet has been opened
 export function ProfileView() {
   const data = use(getProfile());
+  const sheetRef = useRef<SheetRef>(null);
 
   return (
     <div className={styles.section}>
@@ -60,11 +61,16 @@ export function ProfileView() {
       </ul>
       <ul className={styles.links}>
         <li className={styles.link}>
-          <Button variant="none" clickAction={() => {}}>
+          <Button
+            variant="none"
+            clickAction={() => {
+              sheetRef.current?.open();
+            }}
+          >
             <Icon icon="account" className={styles.listItemIcon} />
             Accounts ({data.numberOfSelectedAccounts})
           </Button>
-          <Sheet>
+          <Sheet ref={sheetRef}>
             <AccountsView />
           </Sheet>
         </li>

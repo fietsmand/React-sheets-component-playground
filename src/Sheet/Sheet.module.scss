@@ -1,0 +1,27 @@
+.dialog {
+  height: auto;
+  width: 420px;
+  position: fixed;
+  right: 8px;
+  top: 8px;
+  bottom: 8px;
+  left: auto;
+  margin: 0;
+  padding: 0;
+  outline: none;
+  border: 0;
+  border-radius: 16px;
+  animation: slide-out var(--animation-duration) linear;
+  overflow: hidden;
+  flex-direction: column;
+}
+
+.dialog:popover-open {
+  display: flex;
+  animation: slide-in var(--animation-duration) linear;
+}
+
+::backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(1px);
+}
