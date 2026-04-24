@@ -32,14 +32,14 @@ export default function App() {
               <>
                 <Button
                   clickAction={() => {
-                    sheetRef.current?.open();
+                    sheetRef.current?.close();
                   }}
                 >
                   back
                 </Button>
                 <Button
                   clickAction={() => {
-                    sheetRef.current?.open();
+                    sheetRef.current?.close();
                   }}
                 >
                   close
