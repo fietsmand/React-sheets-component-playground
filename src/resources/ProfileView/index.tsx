@@ -2,8 +2,7 @@ import { use } from "react";
 import { Button } from "../Button";
 import styles from "./ProfileView.module.scss";
 import { Icon } from "../Icon";
-import { Sheet } from "../../Sheet";
-import { AccountsView } from "../AccountsView";
+import { AccountsButton } from "../AccountsView";
 interface ProfileData {
   name: string;
   email: string;
@@ -21,7 +20,7 @@ function getProfileImpl() {
         email: "daniel.huizenga@bestseller.com",
         numberOfSelectedAccounts: 2,
       });
-    }, 2000);
+    }, 0);
   });
 }
 
@@ -60,13 +59,10 @@ export function ProfileView() {
       </ul>
       <ul className={styles.links}>
         <li className={styles.link}>
-          <Button variant="none" clickAction={() => {}}>
-            <Icon icon="account" className={styles.listItemIcon} />
-            Accounts ({data.numberOfSelectedAccounts})
-          </Button>
-          <Sheet>
-            <AccountsView />
-          </Sheet>
+          <AccountsButton
+            count={data.numberOfSelectedAccounts}
+            iconClassName={styles.listItemIcon}
+          />
         </li>
         <li className={styles.link}>
           <Button variant="none" clickAction={() => {}}>

@@ -1,4 +1,7 @@
-import { use } from "react";
+import { Suspense, use, useCallback, useMemo } from "react";
+import { Button } from "../Button";
+import { Icon } from "../Icon";
+import { useSheet } from "../../Sheet/SheetContext";
 
 interface AccountsData {
   accounts: [
@@ -32,8 +35,7 @@ function getAccounts() {
   return accountsPromise;
 }
 
-// NOTE: This should only be rendered when the sheet has been opened
-export function AccountsView() {
+export function AccountsPanel() {
   const data = use(getAccounts());
 
   return (
@@ -43,12 +45,42 @@ export function AccountsView() {
       <ul>
         {data.accounts.map((account) => {
           return (
-            <li>
+            <li key={account.id}>
               {account.id}: {account.label}
             </li>
           );
         })}
       </ul>
     </section>
+  );
+}
+
+interface AccountsButtonProps {
+  count?: number;
+  iconClassName?: string;
+}
+
+export function AccountsButton({ count, iconClassName }: AccountsButtonProps) {
+  const sheet = useSheet();
+
+  const panel = useMemo(
+    () => (
+      <Suspense fallback={<p>Loading accounts…</p>}>
+        <AccountsPanel />
+      </Suspense>
+    ),
+    [],
+  );
+
+  const open = useCallback(
+    () => sheet.navigate({ title: "Accounts", component: panel }),
+    [sheet, panel],
+  );
+
+  return (
+    <Button variant="none" clickAction={open}>
+      <Icon icon="account" className={iconClassName} />
+      Accounts{count != null ? ` (${count})` : ""}
+    </Button>
   );
 }

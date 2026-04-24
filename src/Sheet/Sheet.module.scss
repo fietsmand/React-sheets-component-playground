@@ -1,0 +1,139 @@
+.dialog {
+  // reset dialog defaults
+  border: none;
+  padding: 0;
+  max-width: unset;
+  max-height: unset;
+
+  // positioning — margin-left: auto pushes to the right
+  margin: 12px 12px 12px auto;
+  width: 420px;
+  height: calc(100vh - 24px);
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.16);
+
+  // layout
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  // slide animation
+  transform: translateX(calc(100% + 24px));
+  transition:
+    transform 320ms cubic-bezier(0.4, 0, 0.2, 1),
+    display 320ms allow-discrete,
+    overlay 320ms allow-discrete;
+
+  &[open] {
+    transform: translateX(0);
+  }
+
+  @starting-style {
+    &[open] {
+      transform: translateX(calc(100% + 24px));
+    }
+  }
+
+  &::backdrop {
+    background: rgba(0, 0, 0, 0.32);
+    opacity: 0;
+    transition:
+      opacity 240ms cubic-bezier(0.4, 0, 0.2, 1),
+      display 240ms allow-discrete,
+      overlay 240ms allow-discrete;
+  }
+
+  &[open]::backdrop {
+    opacity: 1;
+  }
+
+  @starting-style {
+    &[open]::backdrop {
+      opacity: 0;
+    }
+  }
+
+  @media (max-width: 640px) {
+    margin: auto 0 0 0;
+    width: 100vw;
+    height: auto;
+    max-height: 90vh;
+    border-radius: 12px 12px 0 0;
+    transform: translateY(100%);
+
+    &[open] {
+      transform: translateY(0);
+    }
+
+    @starting-style {
+      &[open] {
+        transform: translateY(100%);
+      }
+    }
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 16px 12px;
+  min-height: 56px;
+}
+
+.headerButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 18px;
+
+  &:hover {
+    background: var(--Background-Greys-Light-grey, #e6e6e6);
+  }
+}
+
+.title {
+  flex: 1;
+  margin: 0;
+  font-family: var(--font-family-default, Inter);
+  font-size: 16px;
+  font-weight: var(--font-weight-semibold, 600);
+  text-align: start;
+}
+
+.viewport {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+.track {
+  display: flex;
+  width: 200%;
+  height: 100%;
+  transform: translateX(0);
+  transition: transform 320ms cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+
+  &.atSub {
+    transform: translateX(-50%);
+  }
+}
+
+.panel {
+  width: 50%;
+  flex-shrink: 0;
+  overflow-y: auto;
+  contain: layout;
+
+  &.hidden {
+    visibility: hidden;
+  }
+}
