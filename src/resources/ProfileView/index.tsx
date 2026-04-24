@@ -1,9 +1,9 @@
-import { use } from "react";
+import { memo, use } from "react";
 import { Button } from "../Button";
 import styles from "./ProfileView.module.scss";
 import { Icon } from "../Icon";
-import { Sheet } from "../../Sheet";
-import { AccountsView } from "../AccountsView";
+import  { profileSheet }  from "../../App";
+
 interface ProfileData {
   name: string;
   email: string;
@@ -33,6 +33,7 @@ function getProfile() {
 // NOTE: This should only be rendered when the sheet has been opened
 export function ProfileView() {
   const data = use(getProfile());
+  const navigate = profileSheet.useSheet((s) => s.navigate);
 
   return (
     <div className={styles.section}>
@@ -60,13 +61,10 @@ export function ProfileView() {
       </ul>
       <ul className={styles.links}>
         <li className={styles.link}>
-          <Button variant="none" clickAction={() => {}}>
+          <Button variant="none" clickAction={() => navigate("accounts")}>
             <Icon icon="account" className={styles.listItemIcon} />
             Accounts ({data.numberOfSelectedAccounts})
           </Button>
-          <Sheet>
-            <AccountsView />
-          </Sheet>
         </li>
         <li className={styles.link}>
           <Button variant="none" clickAction={() => {}}>
@@ -96,3 +94,4 @@ export function ProfileView() {
     </div>
   );
 }
+export const MemoProfileView = memo(ProfileView);
