@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { Button } from "./resources/Button";
 import "./styles.css";
-import { Sheet, SheetRef } from "./Sheet";
+import { Sheet, SheetFooter, SheetHeader, SheetRef } from "./Sheet";
 import { ProfileView } from "./resources/ProfileView";
 
 //use ref
@@ -24,7 +24,23 @@ export default function App() {
         Open Drawer
       </Button>
 
-      <Sheet ref={sheetRef}>
+      <Sheet
+        ref={sheetRef}
+        header={<SheetHeader header={"title"} />}
+        footer={
+          <SheetFooter>
+            <Button
+              clickAction={() => {
+                const isConfirm = confirm("DO YOU WANT TO SAVE");
+                console.log("🚀 ~ App ~ isConfirm:", isConfirm);
+                if (isConfirm) sheetRef.current?.close();
+              }}
+            >
+              action 1
+            </Button>
+          </SheetFooter>
+        }
+      >
         <ProfileView />
       </Sheet>
     </div>
