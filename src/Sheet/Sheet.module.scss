@@ -44,8 +44,6 @@
   align-self: stretch;
 }
 
-/* Animation keyframes */
-
 @keyframes slide-in {
   0% {
     transform: translateX(420px);
@@ -89,10 +87,12 @@
   0% {
     background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(1px);
+    display: block;
   }
 
   100% {
     background: rgba(0, 0, 0, 0);
     backdrop-filter: blur(0px);
+    display: none;
   }
 }

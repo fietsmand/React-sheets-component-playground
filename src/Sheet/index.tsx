@@ -11,6 +11,7 @@ import {
 import styles from "./Sheet.module.scss";
 import { Button } from "../resources/Button";
 import { Icon } from "../resources/Icon";
+import classNames from "classnames";
 export interface SheetRef {
   open: () => void;
   close: () => void;
@@ -18,24 +19,27 @@ export interface SheetRef {
 }
 export interface SheetProps extends PropsWithChildren {
   ref: RefObject<SheetRef | null>;
-
-  header: React.ReactNode;
+  header: ReturnType<typeof SheetHeader>;
   footer: React.ReactNode;
 }
 
 interface SheetContextType {
   close: () => void;
   back?: () => void;
+  moveContentOut: () => void;
+  moveContentIn: () => void;
 }
 export const SheetContext = createContext<SheetContextType | null>(null);
 
-export function SheetHeader({ children }: PropsWithChildren) {
+export function SheetHeader({
+  children,
+  className,
+}: PropsWithChildren<{ className?: string }>) {
   const sheetContext = use(SheetContext);
   if (!sheetContext) throw Error("SheetContext can only be used in a provider");
 
-  const isRenderedWithinASheet = !!sheetContext?.back;
   return (
-    <header className={styles.header}>
+    <header className={classNames(styles.header, className)}>
       {sheetContext.back && (
         <Button clickAction={sheetContext.back}>
           <Icon icon={"account"} />
@@ -49,10 +53,17 @@ export function SheetHeader({ children }: PropsWithChildren) {
   );
 }
 
-export function SheetFooter({ children }: PropsWithChildren) {
-  return <footer className={styles.footer}>{children}</footer>;
+export function SheetFooter({
+  children,
+  className,
+}: PropsWithChildren<{ className?: string }>) {
+  return (
+    <footer className={classNames(classNames, styles.footer)}>
+      {children}
+    </footer>
+  );
 }
-
+const DURATION_IN_MS = 300;
 export function Sheet({ children, ref, header, footer }: SheetProps) {
   const sheetContext = use(SheetContext);
   const [isPending, startTransition] = useTransition();
@@ -78,7 +89,7 @@ export function Sheet({ children, ref, header, footer }: SheetProps) {
           },
         ],
         {
-          duration: 700,
+          duration: DURATION_IN_MS,
           fill: "forwards",
         },
       );
@@ -96,7 +107,7 @@ export function Sheet({ children, ref, header, footer }: SheetProps) {
           },
         ],
         {
-          duration: 700,
+          duration: DURATION_IN_MS,
           fill: "forwards",
         },
       ),
@@ -109,7 +120,7 @@ export function Sheet({ children, ref, header, footer }: SheetProps) {
       setOpen(false);
     });
 
-  const state = {
+  const state: SheetContextType = {
     back: isRenderedWithinASheet ? closeCurrentSheet : undefined,
     close: sheetContext?.close ?? closeCurrentSheet,
     moveContentOut: animateMoveContentOut,
