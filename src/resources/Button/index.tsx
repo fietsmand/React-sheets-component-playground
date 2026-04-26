@@ -1,16 +1,21 @@
+import React from "react";
 import { PropsWithChildren, startTransition } from "react";
 import styles from "./Button.module.scss";
 import classNames from "classnames";
 import { capitalize } from "lodash";
 
 interface ButtonProps {
+  hoverAction?: () => void;
   clickAction: () => void;
   variant?: "primary" | "tertiary" | "none";
+  disabled?: boolean;
 }
 
 export function Button({
+  hoverAction,
   clickAction,
   variant = "primary",
+  disabled = false,
   children,
 }: PropsWithChildren<ButtonProps>) {
   return (
@@ -19,7 +24,14 @@ export function Button({
         styles.button,
         styles[`variant${capitalize(variant)}`],
       )}
-      onClick={() => startTransition(clickAction)}
+      disabled={disabled}
+      onMouseEnter={async () => {
+        startTransition(async () => {
+          console.log("Starting HOVER transtition");
+          await hoverAction?.();
+        });
+      }}
+      onClick={clickAction}
     >
       {children}
     </button>

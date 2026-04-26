@@ -1,9 +1,10 @@
-import { use } from "react";
+import { Suspense, use, useState } from "react";
 import { Button } from "../Button";
 import styles from "./ProfileView.module.scss";
 import { Icon } from "../Icon";
 import { Sheet } from "../../Sheet";
 import { AccountsView } from "../AccountsView";
+import { SheetHeader } from "../../Sheet/SheetHeader";
 interface ProfileData {
   name: string;
   email: string;
@@ -33,6 +34,8 @@ function getProfile() {
 // NOTE: This should only be rendered when the sheet has been opened
 export function ProfileView() {
   const data = use(getProfile());
+  const [isOpen, setIsOpen] = useState(false);
+  const toggle = () => setIsOpen((prev) => !prev);
 
   return (
     <div className={styles.section}>
@@ -60,12 +63,27 @@ export function ProfileView() {
       </ul>
       <ul className={styles.links}>
         <li className={styles.link}>
-          <Button variant="none" clickAction={() => {}}>
+          <Button variant="none" clickAction={toggle}>
             <Icon icon="account" className={styles.listItemIcon} />
             Accounts ({data.numberOfSelectedAccounts})
           </Button>
-          <Sheet>
-            <AccountsView />
+          <Sheet
+            isOpen={isOpen}
+            onClose={toggle}
+            direction="bottom"
+            header={
+              <SheetHeader
+                title={"Accounts"}
+                onClose={toggle}
+                onBack={toggle}
+                showBackButton={false}
+                showCloseButton={true}
+              />
+            }
+          >
+            <Suspense fallback={<div>Loading accounts...</div>}>
+              <AccountsView />
+            </Suspense>
           </Sheet>
         </li>
         <li className={styles.link}>
