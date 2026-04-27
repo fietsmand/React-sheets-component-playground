@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useContext, useRef } from "react";
 import { Button } from "./resources/Button";
 import "./styles.css";
 import { Sheet, SheetFooter, SheetHeader, SheetRef } from "./Sheet";
@@ -7,14 +7,9 @@ import { ProfileView } from "./resources/ProfileView";
 //use ref
 export default function App() {
   const sheetRef = useRef<SheetRef>(null);
-  //console.log(sheetRef.current);
   return (
     <div className="App">
       <h1>Sheet example</h1>
-      <pre>
-        <p>Start by editing the `./Sheet/index.tsx` component.</p>
-      </pre>
-
       <Button
         clickAction={() => {
           sheetRef.current?.open();
@@ -27,41 +22,22 @@ export default function App() {
       <Sheet
         ref={sheetRef}
         header={
-          <SheetHeader
-            header={
-              <>
-                <Button
-                  clickAction={() => {
-                    sheetRef.current?.close();
-                  }}
-                >
-                  back
-                </Button>
-                <Button
-                  clickAction={() => {
-                    sheetRef.current?.close();
-                  }}
-                >
-                  close
-                </Button>
-              </>
-            }
-          />
+          <SheetHeader>
+            <p>Drawer Component</p>
+          </SheetHeader>
         }
         footer={
-          <SheetFooter
-            footer={
-              <Button
-                clickAction={() => {
-                  const isConfirm = confirm("DO YOU WANT TO SAVE");
-                  console.log("🚀 ~ App ~ isConfirm:", isConfirm);
-                  if (isConfirm) sheetRef.current?.close();
-                }}
-              >
-                action 1
-              </Button>
-            }
-          />
+          <SheetFooter>
+            <Button
+              clickAction={() => {
+                const isConfirm = confirm("DO YOU WANT TO SAVE");
+                console.log("🚀 ~ App ~ isConfirm:", isConfirm);
+                if (isConfirm) sheetRef.current?.close();
+              }}
+            >
+              action 1
+            </Button>
+          </SheetFooter>
         }
       >
         <ProfileView />

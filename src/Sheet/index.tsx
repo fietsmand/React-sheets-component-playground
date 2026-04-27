@@ -1,7 +1,10 @@
 import {
+  createContext,
   PropsWithChildren,
   ReactNode,
   RefObject,
+  startTransition,
+  use,
   useImperativeHandle,
   useRef,
   useState,
@@ -15,58 +18,90 @@ export interface SheetRef {
 }
 
 export interface SheetProps extends PropsWithChildren {
-  ref: RefObject<SheetRef>;
-  footer: ReactNode;
-  header: ReactNode;
+  ref: RefObject<SheetRef | null>;
+  footer?: ReactNode;
+  header?: ReactNode;
 }
 
-// export function SheetHeader({ children }) {
-//   return children;
-// }
-interface SheetHeaderProps {
-  header: ReactNode;
+interface SheetContextType {
+  close: () => void;
+  back?: () => void;
+}
+export const SheetContext = createContext<SheetContextType | null>(null);
+
+export function SheetHeader({ children }: PropsWithChildren) {
+  const sheetContext = use(SheetContext);
+  console.log("context: ", sheetContext);
+  return (
+    <header>
+      {sheetContext?.back && (
+        <Button clickAction={sheetContext?.back}>back</Button>
+      )}
+      {children}header
+      {sheetContext?.close && (
+        <Button clickAction={sheetContext?.close}>close</Button>
+      )}
+    </header>
+  );
 }
 
-export function SheetHeader({ header }: SheetHeaderProps) {
-  return <header>{header}</header>;
-}
-
-interface SheetFooterProps extends PropsWithChildren {
-  footer: ReactNode;
-}
-export function SheetFooter({ children }: SheetFooterProps) {
+export function SheetFooter({ children }: PropsWithChildren) {
   return <footer>{children}</footer>;
 }
 
 export function Sheet({ children, ref, footer, header }: SheetProps) {
+  const sheetContext = use(SheetContext);
+  const isRenderedWithinASheet = !!sheetContext;
   const [isOpen, setIsOpen] = useState(false);
   const dialogRef = useRef<HTMLDialogElement>(null);
 
   useImperativeHandle(ref, () => {
     return {
-      open() {
+      open: () => {
         setIsOpen(true);
         dialogRef.current?.showPopover();
       },
-      close() {
-        setIsOpen(false);
-        dialogRef.current?.hidePopover();
+      close: () => {
+        closeAll ?? close;
       },
+      isOpen,
     };
-  }, []);
+  }, [isOpen]);
+
+  function closeCurrentSheet() {
+    dialogRef.current?.hidePopover();
+    setIsOpen(false);
+  }
+  const close = () =>
+    startTransition(() => {
+      dialogRef.current?.hidePopover();
+      setIsOpen(false);
+    });
+
+  const closeAll =
+    sheetContext &&
+    function () {
+      sheetContext?.close();
+    };
+
+  const state: SheetContextType = {
+    back: isRenderedWithinASheet ? closeCurrentSheet : undefined,
+    close: sheetContext?.close ?? closeCurrentSheet,
+  };
 
   return (
-    <dialog
-      className={styles.dialog}
-      ref={dialogRef}
-      onClose={() => {
-        setIsOpen(false);
-      }}
-      popover="auto"
-    >
-      {header}
-      {isOpen && <div>{children}</div>}
-      {footer}
-    </dialog>
+    <SheetContext value={state}>
+      <dialog
+        className={styles.dialog}
+        ref={dialogRef}
+        onClose={close}
+        popover="auto"
+      >
+        {header}
+        {isOpen && <div>{children}</div>}
+        SHEET
+        {footer}
+      </dialog>
+    </SheetContext>
   );
 }

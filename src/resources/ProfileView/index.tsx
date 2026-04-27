@@ -2,7 +2,7 @@ import { use, useRef } from "react";
 import { Button } from "../Button";
 import styles from "./ProfileView.module.scss";
 import { Icon } from "../Icon";
-import { Sheet, SheetRef } from "../../Sheet";
+import { Sheet, SheetHeader, SheetRef } from "../../Sheet";
 import { AccountsView } from "../AccountsView";
 interface ProfileData {
   name: string;
@@ -70,7 +70,10 @@ export function ProfileView() {
             <Icon icon="account" className={styles.listItemIcon} />
             Accounts ({data.numberOfSelectedAccounts})
           </Button>
-          <Sheet ref={sheetRef}>
+          <Sheet
+            ref={sheetRef}
+            header={<SheetHeader>Accounts View</SheetHeader>}
+          >
             <AccountsView />
           </Sheet>
         </li>
